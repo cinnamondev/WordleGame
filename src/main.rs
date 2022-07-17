@@ -1,9 +1,11 @@
 use std::io;
-use crate::Game::GameResult;
+mod Wordle;
+mod ui;
 
-mod Game;
+use crate::Wordle::{Game, GameResult, GameError};
+
 fn main() -> io::Result<()> {
-    let mut game = Game::Game::new("foo", 6);
+    let mut game = Game::new("foo", 6);
     loop {
         let mut buffer = String::new();
         let mut stdin = io::stdin(); // We get `Stdin` here.
@@ -15,7 +17,12 @@ fn main() -> io::Result<()> {
                     GameResult::Lose => {println!("{}",g);break;},
                     _ => println!("{}",g)
                 }},
-            Err(e) => {dbg!(e);break;},
+            Err(e) => {
+                match e {
+                    GameError::BadLen(_) => println!("Too short/long guess! A wordle word is 5 letters."),
+                    _ => {dbg!(e);break;}
+                }
+            },
         }
     }
     Ok(())

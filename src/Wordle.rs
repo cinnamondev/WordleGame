@@ -55,9 +55,8 @@ pub struct Game {
 
 impl Game {
     pub fn new(keyword: &str, limit: u8) -> Self {
-        let kw = keyword.to_string();
         Self {
-            keyword: kw, // turn into a vector of chars.
+            keyword: keyword.to_string(),
             guesses: 0,
             limit
         }
@@ -77,13 +76,13 @@ impl Game {
                     GameResult::Lose // Lost the game (if this wasnt right you don't get any more guesses...)
                 } else {    // Process the guess
                     GameResult::Guess(
-                        guess.chars().enumerate()
-                            .map(|(i, c)| {
+                        guess.chars().enumerate()// map each character to the PositionInfo enum
+                            .map(|(i,c)| {
                                 let kwc: Vec<_> = self.keyword.chars().collect();
                                 match c {
-                                    _ if c == kwc[i] => PositionInfo::Correct(c),
-                                    _ if kwc.contains(&c) => PositionInfo::Placement(c),
-                                    _ => PositionInfo::Incorrect(c),
+                                    _ if c == kwc[i] => PositionInfo::Correct(c), // correct character, placement
+                                    _ if kwc.contains(&c) => PositionInfo::Placement(c), // correct character, incorrect placement
+                                    _ => PositionInfo::Incorrect(c), // incorrect character
                                 }
                             }).collect()
                     )
