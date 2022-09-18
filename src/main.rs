@@ -13,9 +13,17 @@ fn main() -> io::Result<()> {
         match game.guess(buffer.trim()) {
             Ok(g) => {
                 match g {
-                    GameResult::Win(_, _) => {println!("{}",g);break},
-                    GameResult::Lose(_) => {println!("{}",g);break;},
-                    _ => println!("{}",g)
+                    GameResult::Win(guesses, positions) => {
+                        println!("{} You won in {} guesses,",GameResult::parse_guess(&positions), guesses);
+                        break;
+                    },
+                    GameResult::Guess(positions) => {
+                        println!("{} +1 guess.", GameResult::parse_guess(&positions));
+                    },
+                    GameResult::Lose(positions) => {
+                        println!("{} You lost!", GameResult::parse_guess(&positions));
+                        break;
+                    },
                 }},
             Err(e) => {
                 match e {

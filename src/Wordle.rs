@@ -1,5 +1,6 @@
 //mod dictionary;
 use std::{fmt,fmt::Formatter,slice};
+use std::fmt::Display;
 
 #[derive(Debug,Copy, Clone)]
 pub enum PositionInfo {
@@ -19,6 +20,7 @@ impl ToString for PositionInfo {
         }
     }
 }
+
 
 #[derive(Debug)]
 pub enum GameResult {
